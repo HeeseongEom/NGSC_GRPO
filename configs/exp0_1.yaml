@@ -1,0 +1,113 @@
+experiment:
+  name: ngsc_grpo_exp0_1
+  output_root: outputs
+  seed: 2031
+
+# EXP0_1 changes only the training reward.  It reuses the exact EXP0 splits,
+# cached frozen features, fixed-NGSC scores, and dense upper bounds.
+artifacts:
+  reuse_experiment: ngsc_grpo_exp0
+  baseline_reports_experiment: ngsc_grpo_exp0
+
+datasets:
+  - BrainMRI
+  - BUSI
+  - KiTS
+  - ColonDB
+  - Covid-QU-Ex
+  - MedSeg
+  - HAM10000
+  - PH2
+
+# EXP0 deliberately fixes one dense backbone. Changing this value creates a
+# separate experiment rather than silently multiplying the 56-job matrix.
+method: ClearCLIP
+
+paths:
+  data_root: data
+  checkpoint_dir: checkpoints/biomedclip_ngsc
+  prompt_template: assets/prompts/biomedcoop_templates.py
+  prompt_map_dir: assets/prompt_maps
+
+split:
+  train_pair_counts: [32, 128]
+  balance_presence_when_possible: true
+  internal_excludes_selected_patient_or_image: true
+
+ngsc_core:
+  normalization: per_class
+  seed: argmax
+  cdam_temperature: 0.8
+  cdam_softmax_temperature: 0.8
+  naclip_gaussian_std: 5.0
+  original_tau: 0.6
+  original_gamma: 0.5
+  radiology_eta: 1.4
+  nonradiology_eta: 0.8
+
+actions:
+  names: [eta, tau, gamma, kappa_sp]
+  eta: [0.0, 3.0]
+  tau: [0.0, 1.0]
+  gamma: [0.0, 1.0]
+  kappa_sp: [0.0, 4.0]
+
+cache:
+  reward_resolution: 224
+  dtype: float16
+  # A full ClearCLIP forward at this size occupies roughly the useful portion
+  # of a 24 GiB board. OOM is handled by halving down to min_batch_size.
+  batch_size: 2560
+  min_batch_size: 32
+
+reward:
+  positive: dice_lesion_f1_boundary_f1
+  dice_weight: 0.6
+  lesion_f1_weight: 0.3
+  boundary_f1_weight: 0.1
+  lesion_connectivity: 8
+  lesion_min_overlap_pixels: 1
+  boundary_tolerance_pixels: 2
+  absent: empty_margin_then_one_minus_foreground_area
+  absent_margin: 0.2
+
+policy:
+  beta_floor: 0.5
+  beta_max: 100.0
+  # 25 keeps alpha/beta above beta_floor=0.5 even for the 0.02 normalized
+  # approximation of boundary actions such as kappa_sp=0.
+  reference_concentration: 25.0
+  cnn_hidden_channels: 32
+
+optimization:
+  group_sizes: [4, 8, 16]
+  batch_pairs: 16
+  updates: 500
+  ppo_epochs: 4
+  lr: 1.0e-3
+  kl_beta: 1.0e-3
+  clip_epsilon: 0.2
+  grad_clip: 1.0
+  log_interval: 10
+
+upper_bound:
+  # One upper-bound job per dataset uses the n=128 split's internal set.
+  internal_split_train_pairs: 128
+  eta_grid: [0.0, 0.75, 1.5, 2.25, 3.0]
+  tau_grid: [0.0, 0.25, 0.5, 0.75, 1.0]
+  gamma_grid: [0.0, 0.25, 0.5, 0.75, 1.0]
+  kappa_sp_grid: [0.0, 1.0, 2.0, 3.0, 4.0]
+  # All 625 combinations are ranked at patch resolution. The best eight plus
+  # the fixed baseline are re-ranked with the final 224x224 dataset mIoU.
+  exact_topk: 8
+
+evaluation:
+  resolution: 224
+  save_per_pair: false
+  batch_size: 512
+  min_batch_size: 32
+
+runtime:
+  gpu_ids: [0, 1]
+  omp_threads: 1
+  workers_per_gpu: 2

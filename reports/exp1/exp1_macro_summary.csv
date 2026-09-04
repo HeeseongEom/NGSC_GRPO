@@ -1,0 +1,5 @@
+method,Internal_Original,External_Original,Internal_Core,External_Core,Internal_Static,External_Static,Internal_GRPO,External_GRPO,Internal_GRPO-Static,External_GRPO-Static
+MaskCLIP,53.895,35.296,54.13,34.534,56.008,30.93,56.016,30.428,0.007,-0.502
+SCLIP,52.767,32.114,53.056,34.044,55.456,29.902,55.192,30.798,-0.264,0.896
+ClearCLIP,53.182,34.37,52.93,34.751,55.437,30.713,55.482,30.56,0.045,-0.153
+NACLIP,46.586,30.967,49.686,35.955,53.089,30.632,52.434,28.07,-0.655,-2.563

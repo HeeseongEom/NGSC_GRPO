@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Large artifacts (not tracked)
+outputs/*
+!outputs/.gitkeep
+checkpoints/
+references/
+
+# Env
+.env
+*.egg-info/
+.venv/

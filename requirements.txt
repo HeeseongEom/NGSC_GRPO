@@ -1,0 +1,7 @@
+numpy>=1.23,<2
+Pillow>=9
+PyYAML>=6
+torch>=2.0,<2.9
+transformers>=4.42,<4.43
+tqdm>=4.63
+pytest>=7

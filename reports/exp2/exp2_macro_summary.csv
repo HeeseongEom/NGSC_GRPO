@@ -1,0 +1,5 @@
+method,internal_static_mIoU_percent,internal_global_mIoU_percent,internal_conditional_mIoU_percent,external_static_mIoU_percent,external_global_mIoU_percent,external_conditional_mIoU_percent,internal_conditional_minus_static_percent_point,external_conditional_minus_static_percent_point
+MaskCLIP,56.008,56.069,55.766,30.93,30.694,30.94,-0.242,0.009
+SCLIP,55.456,55.462,55.455,29.902,29.852,30.121,-0.001,0.219
+ClearCLIP,55.437,55.646,55.266,30.713,29.862,30.052,-0.171,-0.661
+NACLIP,53.089,53.001,51.282,30.632,30.279,28.791,-1.807,-1.841

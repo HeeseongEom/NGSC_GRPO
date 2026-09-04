@@ -1,0 +1,23 @@
+{
+  "created_from": "/data2/hseum/MedCLIP-SAMv2_hs_final",
+  "checkpoint_note": "pytorch_model.bin and the modified model/config files are the fine-tuned NGSC BiomedCLIP copy; tokenizer/processor files come from the locally cached chuhac/BiomedCLIP-vit-bert-hf snapshot c44fed22e30460c0ea1b033a41b68fdab375d64c.",
+  "data_note": "Only the eight protocol datasets' test_images/test_masks are copied. Source calibration intentionally samples from the legacy test pools because these are the labeled pools used by the existing repository; held-out targets remain dataset-disjoint.",
+  "storage_note": "Large immutable dataset/checkpoint payloads may be represented as same-filesystem hard links to avoid duplicating blocks on a 99%-used volume. They remain valid if the original pathname is removed, but must be treated as read-only because in-place content edits affect both names.",
+  "sha256": [
+    {"path": "checkpoints/biomedclip_ngsc/pytorch_model.bin", "digest": "f59b08d2ad3861a8a3a6b44037fba5fa5da11989eacda0eb98732af960a3697d"},
+    {"path": "checkpoints/biomedclip_ngsc/modeling_biomed_clip.py", "digest": "ff08e65413490e08b1ec98b8c9a3a30ed5ec46b72402f7a96d7833826ebd0dac"},
+    {"path": "checkpoints/biomedclip_ngsc/config.json", "digest": "1de3d38ac5ede7babaf72d68e45c00e5bdbf5240c5b50fcec259c79375367431"},
+    {"path": "checkpoints/biomedclip_ngsc/configuration_biomed_clip.py", "digest": "d78ff692dff763c0da8a0280e890c530ba6d720c8f12a04196b9598b1d72a302"},
+    {"path": "checkpoints/biomedclip_ngsc/processing_biomed_clip.py", "digest": "22fb0c0ef2324137a441081034ab0d37a95f077ab2fe3d29e29ac4eda6517e0c"},
+    {"path": "checkpoints/biomedclip_ngsc/preprocessor_config.json", "digest": "b73eb29108ff586ec6e81abf6149cd24132ceac0eae76ca20b3f3004e848a4c4"},
+    {"path": "checkpoints/biomedclip_ngsc/tokenizer.json", "digest": "defc1f91456606e7847af3a2fb4a8abb96441423aa5407a52498395ea68327ff"},
+    {"path": "checkpoints/biomedclip_ngsc/tokenizer_config.json", "digest": "e1790949631401af1bfb6c9c7aeec7fcf612e274d73579d99f704faea40c8ba7"},
+    {"path": "assets/prompts/biomedcoop_templates.py", "digest": "db5710ce59e90c45207e135876df3931480a24c9b5d8786d26f7c1865bb0435c"},
+    {"path": "assets/prompts/normal_medical_prompt_classes.json", "digest": "9edb460ed2add2046a4e08919a925f4406e15c2c4386c0f9aed05ef20d45b275"},
+    {"path": "assets/prompt_maps/brain_tumors_testing.json", "digest": "f59e319d6fe411e18584ede2a6bf5acf4f75a9d0a6aa1d90286986b53c7d0904"},
+    {"path": "assets/prompt_maps/breast_tumors_testing.json", "digest": "02ce698bedd754dd1f1826166b104b9286922fb0ae19c4b4619924c2b1ff142d"},
+    {"path": "references/NGSC_paper.pdf", "digest": "08d3747345ba4955801aa923a93bf9b84fbfb63e1796f4dfb6d2a1d204cbfdb3"},
+    {"path": "references/TRIPS.pdf", "digest": "f9d472e6d65d9d6ec7bc762cd7111d0b7c725576efdab1292df8e453e1b96a5c"},
+    {"path": "references/feasibility_design_ko.md", "digest": "6fb6eb005b3ec216f3dbaa4f4c84fe97aa24c6d1aa7baafee56ae1cb9a6698dc"}
+  ]
+}

@@ -1,0 +1,81 @@
+experiment:
+  name: smoke
+  target_mode: zero_shot
+  split_seed: 2027
+  output_root: outputs
+paths:
+  data_root: data
+  checkpoint_dir: checkpoints/biomedclip_ngsc
+  prompt_template: assets/prompts/biomedcoop_templates.py
+  prompt_map_dir: assets/prompt_maps
+sources: [BrainMRI, BUSI, KiTS, ColonDB]
+targets: [Covid-QU-Ex, MedSeg, HAM10000, PH2]
+dense_methods: [MaskCLIP, SCLIP, ClearCLIP, NACLIP]
+calibration:
+  max_per_source: 8
+  train_per_source: 6
+  val_per_source: 2
+  patient_level: true
+  class_stratified: true
+  reward_resolution: 28
+ngsc_core:
+  backbone_frozen: true
+  prompt_ensemble: existing_biomedcoop_50
+  normalization: per_class
+  seed: argmax
+  cdam_temperature: 0.8
+  cdam_softmax_temperature: 0.8
+  naclip_gaussian_std: 5.0
+  original_tau: 0.6
+  original_gamma: 0.5
+  radiology_eta: 1.4
+  nonradiology_eta: 0.8
+continuous_action:
+  eta: [0.0, 3.0]
+  tau: [0.0, 1.0]
+  gamma: [0.0, 1.0]
+  kappa_sp: [0.0, 4.0]
+state:
+  dim: 11
+  standardize_on: source_train_only
+  clip: [-5.0, 5.0]
+static_search:
+  method: sobol
+  num_actions: 8
+  num_states: 16
+  action_chunk_size: 4
+  reference_concentration: 20.0
+controller:
+  type: linear_beta
+  input_dim: 11
+  action_dim: 4
+  beta_floor: 0.5
+  beta_max: 100.0
+grpo:
+  group_size: 4
+  batch_states: 4
+  updates: 20
+  optimizer: adam
+  lr: 1.0e-3
+  weight_decay: 0.0
+  clip_epsilon: 0.2
+  kl_beta: 1.0e-3
+  grad_clip: 1.0
+  advantage_eps: 1.0e-6
+  entropy_coef: 0.0
+  ppo_epochs: 1
+  seeds: [0]
+  log_interval: 1
+  val_interval: 5
+inference:
+  stochastic: false
+  action: beta_mean
+  target_adaptation: false
+  save_action_rows: true
+baselines: [original_ngsc, core_fixed, source_static, conditional_grpo]
+runtime:
+  device: cpu
+  cache_dtype: float32
+  num_workers: 0
+  deterministic: true
+  target_limit_per_dataset: 2
